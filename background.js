@@ -168,9 +168,10 @@ function isAccountLoggedIn(accountIndex) {
 
 function getAccountForService(url) {
   for (const rule of rules) {
+    const serviceUrl = rule.serviceUrl.toLowerCase();
     const reg = new RegExp(
-      `^https?:\/\/[^?&]*${rule.serviceName.toLowerCase()}\.google\.co.*`,
-      "is"
+      `^https?:\/\/${serviceUrl.replace(/\./g, '\\.')}`,
+      "i"
     );
     if (reg.test(url)) {
       return rule.accountId;
