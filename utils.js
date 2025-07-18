@@ -1,10 +1,24 @@
-// Full list of Google Services subdomains - https://gist.github.com/abuvanth/b9fcbaf7c77c2954f96c6e556138ffe8
+// Automatically detects Google service URLs based on the service list
 function isGoogleServiceUrl(url) {
+  // Generate regex pattern from all supported services
+  const services = allSupportedGoogleServices()
+  const serviceSubdomains = services.map(service => {
+    const serviceUrl = service.url.toLowerCase()
+    // Extract subdomain from service URL (e.g., "calendar" from "calendar.google.com")
+    const match = serviceUrl.match(/^([^.]+)\.google\./)
+    return match ? match[1] : null
+  }).filter(Boolean)
+  
+  // Create regex pattern with all service subdomains
+  const servicePattern = serviceSubdomains.join('|')
+  const serviceRegex = new RegExp(
+    `^https?:\\/\\/[^?&]*(?:${servicePattern})\\.google\\.co.*`, 
+    'i'
+  )
+  
   return (
-    /^https?:\/\/[^?&]*(?:mail|drive|calendar|meet|docs|admin|photos|translate|keep|hangouts|chat|workspace|maps|news|ads|ediscovery|jamboard|earth|podcasts|classroom|business|myaccount|adsense|cloud|adwords|analytics|firebase|play|voice|tagmanager|duo|datastudio|optimize|merchants|finance|colab.research|contacts|script|messages|search|stadia|developers|one|chrome|books|sites|groups|gemini)\.google\.co.*/i.test(
-      url
-    ) ||
-    // test several services that witched from the patter "https://maps.google.com" -> https://www.google.com/maps
+    serviceRegex.test(url) ||
+    // Special cases for services that use google.com/path format
     /^https?:\/\/(www\.)?google\.co(?:m|\.[a-z]{2,3})\/(?:maps|finance|travel|flights)/i.test(url)
   )
 }
@@ -47,6 +61,12 @@ function allAccounts(callback) {
 
 function allSupportedGoogleServices() {
   return [
+    {
+      name: 'AIStudio',
+      title: 'AI Studio',
+      url: 'aistudio.google.com',
+      img: './images/logos/aistudio.png',
+    },
     {
       name: 'Gemini',
       title: 'Gemini',
