@@ -1,0 +1,35 @@
+{
+  "name": "default-google-account",
+  "version": "1.14.0",
+  "description": "Default Account for Google™ products - Chrome and Firefox extension",
+  "scripts": {
+    "build": "npm run build:chrome && npm run build:firefox",
+    "build:chrome": "node scripts/build-chrome.js",
+    "build:firefox": "node scripts/build-firefox.js",
+    "package": "npm run package:chrome && npm run package:firefox",
+    "package:chrome": "cd dist/chrome && zip -r ../chrome-extension.zip . -x '*.DS_Store' '*/__MACOSX/*'",
+    "package:firefox": "cd dist/firefox && zip -r ../firefox-extension.zip . -x '*.DS_Store' '*/__MACOSX/*'",
+    "clean": "rm -rf dist/",
+    "dev": "npm run build && npm run package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yashhere/default.wtf.git"
+  },
+  "upstream": {
+    "type": "git",
+    "url": "https://github.com/uptechteam/default.wtf.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "firefox-addon",
+    "google-accounts",
+    "account-switching",
+    "browser-extension"
+  ],
+  "author": "Yash (forked from Uptech)",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "fs-extra": "^11.1.1"
+  }
+}
